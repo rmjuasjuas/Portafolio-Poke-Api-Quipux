@@ -3,11 +3,32 @@
     <h1 class="section-title animate-fade-in">| POKEMON LIBRARY |</h1>
 
     <p class="library-intro">
-      Estos son mis Pokemons favoritos
+      Estos son mis Pokémons favoritos
     </p>
 
+    <div class="add-pokemon-box animate-fade-in">
+      <input 
+        type="text" 
+        [(ngModel)]="nuevoPokemon"
+        placeholder="Agregar Pokémon (ej: rayquaza)"
+        class="pixel-input"
+      />
+    
+      <button 
+        (click)="addFavorite(nuevoPokemon)" 
+        class="pixel-btn pixel-btn-green"
+      >
+        Agregar
+      </button>
+    </div>
+
+    <button class="pixel-btn pixel-btn-red" (click)="clearFavorites()">
+      borrar todo
+    </button>
+
     <div class="pokemon-grid">
-      <div class="pokemon-card animate-fade-in" *ngFor="let p of pokemonList">
+      <div class="pokemon-card animate-fade-in" *ngFor="let p of pokemonList; let i = index"
+           [style.animation-delay]="(i * 0.1) + 's'">
         <div
           class="pokemon-header"
           [style.background-color]="getColor(p.types[0]?.type?.name)"
@@ -41,12 +62,30 @@
           </div>
 
           <div class="pokemon-actions">
-            <button (click)="removeFromLibrary(p.name)" class="pixel-btn pixel-btn-red">
-              Eliminar
+            <button 
+              (click)="verSpecies(p)" 
+              class="pixel-btn pixel-btn-blue"
+              title="Ver información del Pokédex"
+            >
+              Pokédex
+            </button>
+            <button 
+              (click)="verEvolucion(p)" 
+              class="pixel-btn pixel-btn-purple"
+              title="Ver cadena de evolución"
+            >
+              Evolución
             </button>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Empty state si no hay pokémon (opcional, ya que siempre hay seed) -->
+    <div class="empty-library" *ngIf="pokemonList.length === 0">
+      <div class="empty-pokeball"></div>
+      <h3>¡Tu biblioteca está vacía!</h3>
+      <p>Agrega tus Pokémon favoritos desde la sección Pokemon API</p>
     </div>
   </div>
 </div>

@@ -93,12 +93,28 @@
           </select>
         </div>
 
+        <div class="filter-group">
+          <label for="formFilter">Formas especiales:</label>
+          <select 
+            id="formFilter"
+            [(ngModel)]="selectedForm" 
+            (change)="buscarFormaEspecial()"
+            class="pixel-select"
+          >
+            <option value="">Forma normal</option>
+            <option value="mega">Mega Evoluciones</option>
+            <option value="alola">Formas Alola</option>
+            <option value="galar">Formas Galar</option>
+            <option value="gmax">Formas Gigamax</option>
+          </select>
+        </div>
+
         <button (click)="limpiarFiltros()" class="pixel-btn pixel-btn-clear">
           LIMPIAR FILTROS
         </button>
       </div>
     </div>
-
+    
     <!-- Loading -->
     <div class="loading-section" *ngIf="loading">
       <div class="pokeball-loader"></div>
@@ -112,6 +128,7 @@
         <span class="result-count">
           {{ filteredPokemons.length }} Pokémon 
           <span *ngIf="selectedType"> de tipo {{ selectedType }}</span>
+          <span *ngIf="selectedForm"> - {{ selectedForm | titlecase }}</span>
         </span>
       </div>
 

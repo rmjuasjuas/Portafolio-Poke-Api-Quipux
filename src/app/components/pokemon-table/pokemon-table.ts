@@ -23,10 +23,11 @@ export class PokemonTable {
   // Propiedades para búsqueda y filtros
   searchName: string = '';
   selectedType: string = '';
+  selectedForm: string = '';
   
   // Propiedades para paginación
   currentPage: number = 1;
-  totalPokemons: number = 1025; // Total de pokémon en la API
+  totalPokemons: number = 1052;
   itemsPerPage: number = 20;
   totalPages: number = 0;
   
@@ -35,6 +36,41 @@ export class PokemonTable {
     'normal', 'fire', 'water', 'electric', 'grass', 'ice',
     'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
     'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
+  ];
+
+  // Listas de Pokémon con formas especiales
+  megaEvolutions = [
+    'venusaur-mega', 'charizard-mega-x', 'charizard-mega-y', 'blastoise-mega',
+    'alakazam-mega', 'gengar-mega', 'kangaskhan-mega', 'pinsir-mega',
+    'gyarados-mega', 'aerodactyl-mega', 'mewtwo-mega-x', 'mewtwo-mega-y',
+    'ampharos-mega', 'scizor-mega', 'heracross-mega', 'houndoom-mega',
+    'tyranitar-mega', 'blaziken-mega', 'gardevoir-mega', 'mawile-mega',
+    'aggron-mega', 'medicham-mega', 'manectric-mega', 'banette-mega',
+    'absol-mega', 'garchomp-mega', 'lucario-mega', 'abomasnow-mega'
+  ];
+  
+  alolaForms = [
+    'rattata-alola', 'raticate-alola', 'raichu-alola', 'sandshrew-alola',
+    'sandslash-alola', 'vulpix-alola', 'ninetales-alola', 'diglett-alola',
+    'dugtrio-alola', 'meowth-alola', 'persian-alola', 'geodude-alola',
+    'graveler-alola', 'golem-alola', 'grimer-alola', 'muk-alola',
+    'exeggutor-alola', 'marowak-alola'
+  ];
+  
+  galarForms = [
+    'meowth-galar', 'ponyta-galar', 'rapidash-galar', 'slowpoke-galar',
+    'slowbro-galar', 'farfetchd-galar', 'weezing-galar', 'mr-mime-galar',
+    'articuno-galar', 'zapdos-galar', 'moltres-galar', 'slowking-galar',
+    'corsola-galar', 'zigzagoon-galar', 'linoone-galar', 'darumaka-galar',
+    'darmanitan-galar', 'yamask-galar', 'stunfisk-galar'
+  ];
+  
+  gigamaxForms = [
+    'venusaur-gmax', 'charizard-gmax', 'blastoise-gmax', 'butterfree-gmax',
+    'pikachu-gmax', 'meowth-gmax', 'machamp-gmax', 'gengar-gmax',
+    'kingler-gmax', 'lapras-gmax', 'eevee-gmax', 'snorlax-gmax',
+    'garbodor-gmax', 'melmetal-gmax', 'rillaboom-gmax', 'cinderace-gmax',
+    'inteleon-gmax', 'corviknight-gmax', 'orbeetle-gmax', 'drednaw-gmax'
   ];
 
   constructor(private pokemonService: PokemonApi) {}
@@ -186,7 +222,7 @@ export class PokemonTable {
       },
       error: () => {
         this.loading = false;
-        this.pokemonAleatorio(); // Reintentar con otro
+        this.pokemonAleatorio();
       }
     });
   }
@@ -262,9 +298,66 @@ export class PokemonTable {
     }
   }
 
+  // Método para buscar formas especiales
+  buscarFormaEspecial(): void {
+    if (!this.selectedForm) {
+      return;
+    }
+
+    this.loading = true;
+    let pokemonList: string[] = [];
+
+    switch(this.selectedForm) {
+      case 'mega':
+        pokemonList = this.megaEvolutions;
+        break;
+      case 'alola':
+        pokemonList = this.alolaForms;
+        break;
+      case 'galar':
+        pokemonList = this.galarForms;
+        break;
+      case 'gmax':
+        pokemonList = this.gigamaxForms;
+        break;
+    }
+
+    const requests = pokemonList.map(name => 
+      this.pokemonService.getPokemonByName(name).toPromise().catch(() => null)
+    );
+
+    Promise.all(requests)
+      .then((detailedList) => {
+        this.pokemons = detailedList.filter(p => p !== null);
+        this.filteredPokemons = this.pokemons;
+        this.loading = false;
+
+        Swal.fire({
+          title: '¡Formas Especiales!',
+          text: `Se encontraron ${this.pokemons.length} Pokémon con formas especiales`,
+          icon: 'success',
+          confirmButtonText: 'Ver',
+          confirmButtonColor: '#3B4CCA',
+          timer: 2000
+        });
+      })
+      .catch(err => {
+        console.error('Error al obtener formas especiales', err);
+        this.loading = false;
+        Swal.fire({
+          title: '¡Error!',
+          text: 'No se pudieron cargar las formas especiales',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#FF0000'
+        });
+      });
+  }
+
   limpiarFiltros(): void {
     this.selectedType = '';
     this.searchName = '';
+    this.selectedForm = '';
     this.filteredPokemons = this.pokemons;
   }
 
