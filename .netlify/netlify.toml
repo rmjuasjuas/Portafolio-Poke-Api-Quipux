@@ -1,0 +1,33 @@
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[[plugins]]
+origin = "default"
+package = "@netlify/angular-runtime"
+
+[plugins.inputs]
+
+[build]
+publish = "C:\\Users\\jomir\\OneDrive\\Documentos\\semillero uco\\Angular 20\\semillero-quipux\\dist\\semillero-quipux\\browser"
+publishOrigin = "inline"
+commandOrigin = "ui"
+base = "C:\\Users\\jomir\\OneDrive\\Documentos\\semillero uco\\Angular 20\\semillero-quipux"
+command = "npm run build"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]

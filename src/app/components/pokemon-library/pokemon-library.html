@@ -1,0 +1,52 @@
+<div class="pokemon-library-page">
+  <div class="pixel-container">
+    <h1 class="section-title animate-fade-in">| POKEMON LIBRARY |</h1>
+
+    <p class="library-intro">
+      Estos son mis Pokemons favoritos
+    </p>
+
+    <div class="pokemon-grid">
+      <div class="pokemon-card animate-fade-in" *ngFor="let p of pokemonList">
+        <div
+          class="pokemon-header"
+          [style.background-color]="getColor(p.types[0]?.type?.name)"
+        >
+          <div class="pokemon-number">#{{ p.id }}</div>
+          <div class="pokemon-type">{{ p.types[0]?.type?.name | uppercase }}</div>
+        </div>
+
+        <div class="pokemon-image">
+          <img
+            [src]="p.sprites.other['official-artwork'].front_default || p.sprites.front_default"
+            alt="{{ p.name }}"
+            class="pokemon-portrait"
+          />
+        </div>
+
+        <div class="pokemon-info">
+          <h2>{{ p.name | titlecase }}</h2>
+          <p class="pokemon-types">
+            Tipos:
+            <span *ngFor="let t of p.types; let ti = index">
+              {{ t.type.name }}<span *ngIf="ti < p.types.length - 1">, </span>
+            </span>
+          </p>
+
+          <div class="pokemon-stats">
+            <div *ngFor="let s of p.stats" class="pokemon-stat">
+              <strong class="stat-label">{{ s.stat.name }}</strong>
+              <span>{{ s.base_stat }}</span>
+            </div>
+          </div>
+
+          <div class="pokemon-actions">
+            <button (click)="removeFromLibrary(p.name)" class="pixel-btn pixel-btn-red">
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
