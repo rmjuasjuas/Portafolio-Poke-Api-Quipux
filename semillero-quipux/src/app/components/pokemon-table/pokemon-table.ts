@@ -40,17 +40,6 @@ export class PokemonTable {
       return;
     }
 
-    if (this.limit > 50) {
-      Swal.fire({
-        title: '¡Límite excedido!',
-        text: 'El límite máximo es 50 Pokémon',
-        icon: 'warning',
-        confirmButtonText: 'Entendido',
-        confirmButtonColor: '#FFDE00'
-      });
-      return;
-    }
-
     this.loading = true;
     this.pokemons = [];
 
