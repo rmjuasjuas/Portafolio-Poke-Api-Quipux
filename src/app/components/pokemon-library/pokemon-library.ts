@@ -107,6 +107,7 @@ export class PokemonLibrary {
   
     Swal.fire('Agregado', `${pokemonName} fue añadido a favoritos`, 'success');
   }
+/*
   clearFavorites() {
     Swal.fire({
       title: '¿Borrar todos los favoritos?',
@@ -124,7 +125,7 @@ export class PokemonLibrary {
       }
     });
   }
-
+*/
   async loadFavorites() {
     const key = 'pokemon_favorites';
     const stored = localStorage.getItem(key);

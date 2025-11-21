@@ -10,7 +10,7 @@
       <input 
         type="text" 
         [(ngModel)]="nuevoPokemon"
-        placeholder="Agregar Pokémon (ej: rayquaza)"
+        placeholder="Agregar Pokémon"
         class="pixel-input"
       />
     
@@ -21,11 +21,11 @@
         Agregar
       </button>
     </div>
-
+<!--
     <button class="pixel-btn pixel-btn-red" (click)="clearFavorites()">
       borrar todo
     </button>
-
+-->
     <div class="pokemon-grid">
       <div class="pokemon-card animate-fade-in" *ngFor="let p of pokemonList; let i = index"
            [style.animation-delay]="(i * 0.1) + 's'">
