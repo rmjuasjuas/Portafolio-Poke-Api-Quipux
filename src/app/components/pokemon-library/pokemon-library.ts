@@ -76,7 +76,6 @@ export class PokemonLibrary {
 
   nuevoPokemon = '';
 
-
   constructor(private pokemonService: PokemonApi) {}
 
   ngOnInit() {
@@ -99,6 +98,7 @@ export class PokemonLibrary {
       Swal.fire('Ya existe', `${pokemonName} ya está en favoritos`, 'info');
       return;
     }
+
   
     names.push(name);
     localStorage.setItem(key, JSON.stringify(names));
@@ -107,6 +107,7 @@ export class PokemonLibrary {
   
     Swal.fire('Agregado', `${pokemonName} fue añadido a favoritos`, 'success');
   }
+
 /*
   clearFavorites() {
     Swal.fire({
@@ -126,6 +127,7 @@ export class PokemonLibrary {
     });
   }
 */
+
   async loadFavorites() {
     const key = 'pokemon_favorites';
     const stored = localStorage.getItem(key);
