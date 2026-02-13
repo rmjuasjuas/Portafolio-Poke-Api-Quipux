@@ -52,7 +52,7 @@ Pokemon para mi representa muchas cosas en mi vida fue el primer anime que vi, m
 ---
 
 ## Autor
-**José Miguel Ríos Montoya**
+**Jose Miguel Ríos Montoya**
 
 ---
 
