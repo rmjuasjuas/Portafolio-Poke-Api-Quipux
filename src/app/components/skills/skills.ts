@@ -10,12 +10,12 @@ import { CommonModule } from '@angular/common';
 })
 export class Skills {
   programmingSkills = [
-    { name: 'HTML', level: 40, levelText: 'Junior' },
-    { name: 'JavaScript', level: 25, levelText: 'Junior' },
-    { name: 'PHP', level: 35, levelText: 'Junior' },
-    { name: 'Java', level: 10, levelText: 'Junior' },
-    { name: 'Python', level: 10, levelText: 'Junior' },
-    { name: 'TypeScript', level: 15, levelText: 'Junior' },
+    { name: 'HTML', level: 50, levelText: 'Junior' },
+    { name: 'JavaScript', level: 30, levelText: 'Junior' },
+    { name: 'PHP', level: 40, levelText: 'Junior' },
+    { name: 'Java', level: 40, levelText: 'Junior' },
+    { name: 'Python', level: 20, levelText: 'Junior' },
+    { name: 'TypeScript', level: 20, levelText: 'Junior' },
   ];
 
   getSkillBarWidth(level: number): string {
