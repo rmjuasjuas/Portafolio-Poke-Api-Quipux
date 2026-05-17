@@ -1,0 +1,249 @@
+<div class="pokemon-table-page">
+  <div class="pixel-container">
+    <h1 class="section-title animate-fade-in">| POKEMON API |</h1>
+
+    <!-- BOTÓN POKÉMON ALEATORIO -->
+    <div class="random-section animate-fade-in">
+      <button (click)="pokemonAleatorio()" class="pixel-btn pixel-btn-random">
+        POKÉMON ALEATORIO
+      </button>
+    </div>
+
+    <!-- Búsqueda por nombre -->
+    <div class="search-section animate-fade-in">
+      <div class="search-box search-by-name">
+        <h2>BUSCAR POR NOMBRE</h2>
+        <p class="search-description">
+          Busca un Pokémon específico por su nombre o número de Pokédex
+        </p>
+
+        <div class="search-input-group">
+          <input
+            [(ngModel)]="searchName"
+            name="searchName"
+            type="text"
+            class="pixel-input"
+            placeholder="Ej: pikachu, charizard, 25..."
+            (keyup.enter)="buscarPorNombre()"
+          />
+          <button (click)="buscarPorNombre()" class="pixel-btn pixel-btn-red">
+            BUSCAR
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Búsqueda por rango -->
+    <div class="search-section animate-fade-in">
+      <div class="search-box">
+        <h2>BUSCAR POR RANGO</h2>
+        <p class="search-description">
+          Consulta múltiples Pokémon usando límite y offset
+        </p>
+
+        <div class="form-group">
+          <label for="limit">Límite de resultados:</label>
+          <input
+            id="limit"
+            [(ngModel)]="limit"
+            name="limit"
+            type="number"
+            class="pixel-input"
+            placeholder="Ej: 20"
+            min="1"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="offset">Item inicial (offset):</label>
+          <input
+            id="offset"
+            [(ngModel)]="offset"
+            name="offset"
+            type="number"
+            class="pixel-input"
+            placeholder="Ej: 0"
+            min="0"
+          />
+        </div>
+
+        <button (click)="buscarPokemons()" class="pixel-btn pixel-btn-yellow">
+          CONSULTAR INFORMACIÓN
+        </button>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters-section animate-fade-in" *ngIf="pokemons !== null && !loading">
+      <div class="filter-box">
+        <h3>FILTRAR RESULTADOS</h3>
+        
+        <div class="filter-group">
+          <label for="typeFilter">Filtrar por tipo:</label>
+          <select 
+            id="typeFilter"
+            [(ngModel)]="selectedType" 
+            (change)="filtrarPorTipo()"
+            class="pixel-select"
+          >
+            <option value="">Todos los tipos</option>
+            <option *ngFor="let type of pokemonTypes" [value]="type">
+              {{ type | titlecase }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="formFilter">Formas especiales:</label>
+          <select 
+            id="formFilter"
+            [(ngModel)]="selectedForm" 
+            (change)="buscarFormaEspecial()"
+            class="pixel-select"
+          >
+            <option value="">Forma normal</option>
+            <option value="mega">Mega Evoluciones</option>
+            <option value="alola">Formas Alola</option>
+            <option value="galar">Formas Galar</option>
+            <option value="gmax">Formas Gigamax</option>
+          </select>
+        </div>
+
+        <button (click)="limpiarFiltros()" class="pixel-btn pixel-btn-clear">
+          LIMPIAR FILTROS
+        </button>
+      </div>
+    </div>
+    
+    <!-- Loading -->
+    <div class="loading-section" *ngIf="loading">
+      <div class="pokeball-loader"></div>
+      <p>Cargando Pokémon...</p>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" *ngIf="filteredPokemons !== null && !loading">
+      <div class="results-header">
+        <h2>RESULTADOS</h2>
+        <span class="result-count">
+          {{ filteredPokemons.length }} Pokémon 
+          <span *ngIf="selectedType"> de tipo {{ selectedType }}</span>
+          <span *ngIf="selectedForm"> - {{ selectedForm | titlecase }}</span>
+        </span>
+      </div>
+
+      <div class="pokemon-grid">
+        <div class="pokemon-item animate-slide-up" *ngFor="let p of filteredPokemons; let i = index" 
+             [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="pokemon-number">#{{ p.id }}</div>
+
+          <div class="pokemon-header-row">
+            <img
+              [src]="p.sprites.other['official-artwork'].front_default || p.sprites.front_default"
+              alt="{{p.name}}"
+              class="pokemon-image pokemon-float"
+            />
+            <div>
+              <div class="pokemon-name">{{ p.name | titlecase }}</div>
+              <div class="pokemon-types">
+                <span 
+                  *ngFor="let t of p.types; let ti = index" 
+                  class="type-badge"
+                  [style.background-color]="getTypeColor(t.type.name)"
+                >
+                  {{ t.type.name }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pokemon-stats">
+            <div *ngFor="let s of p.stats" class="stat-row">
+              <strong>{{ s.stat.name }}:</strong> 
+              <span class="stat-value">{{ s.base_stat }}</span>
+            </div>
+          </div>
+
+          <div class="pokemon-actions">
+            <button (click)="verSpecies(p)" class="pixel-btn pixel-btn-blue" title="Ver información del Pokédex">
+              Pokédex
+            </button>
+            <button (click)="verEvolucion(p)" class="pixel-btn pixel-btn-purple" title="Ver cadena de evolución">
+              Evolución
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGINACIÓN -->
+      <div class="pagination-section" *ngIf="totalPages > 1">
+        <div class="pagination-controls">
+          <button 
+            (click)="goToPage(1)" 
+            class="pagination-btn"
+            [disabled]="currentPage === 1"
+            title="Primera página"
+          >
+            Primera
+          </button>
+
+          <button 
+            (click)="previousPage()" 
+            class="pagination-btn"
+            [disabled]="currentPage === 1"
+            title="Página anterior"
+          >
+            Anterior
+          </button>
+
+          <div class="page-numbers">
+            <button 
+              *ngFor="let page of getPageNumbers()" 
+              (click)="goToPage(page)"
+              class="page-number"
+              [class.active]="page === currentPage"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button 
+            (click)="nextPage()" 
+            class="pagination-btn"
+            [disabled]="currentPage === totalPages"
+            title="Página siguiente"
+          >
+            Siguiente
+          </button>
+
+          <button 
+            (click)="goToPage(totalPages)" 
+            class="pagination-btn"
+            [disabled]="currentPage === totalPages"
+            title="Última página"
+          >
+            Última
+          </button>
+        </div>
+
+        <div class="pagination-info">
+          <p>Página {{ currentPage }} de {{ totalPages }}</p>
+          <p class="total-pokemon">Total: {{ totalPokemons }} Pokémon</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="(filteredPokemons === null || filteredPokemons.length === 0) && !loading && pokemons !== null">
+      <div class="empty-pokeball"></div>
+      <h3>No se encontraron resultados</h3>
+      <p>Intenta con otros filtros o realiza una nueva búsqueda</p>
+    </div>
+
+    <div class="empty-state" *ngIf="pokemons === null && !loading">
+      <div class="empty-pokeball"></div>
+      <h3>¡Comienza tu aventura Pokémon!</h3>
+      <p>Usa el botón "Pokémon Aleatorio" o realiza una búsqueda para comenzar</p>
+    </div>
+  </div>
+</div>

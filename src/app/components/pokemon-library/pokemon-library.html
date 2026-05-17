@@ -1,0 +1,75 @@
+<div class="pokemon-library-page">
+  <div class="pixel-container">
+    <h1 class="section-title animate-fade-in">| POKE LIBRARY |</h1>
+
+    <p class="library-intro">
+      Estos son mis Pokémons favoritos
+    </p>
+<!--
+    <button class="pixel-btn pixel-btn-red" (click)="clearFavorites()">
+      borrar todo
+    </button>
+-->
+    <div class="pokemon-grid">
+      <div class="pokemon-card animate-fade-in" *ngFor="let p of pokemonList; let i = index"
+           [style.animation-delay]="(i * 0.1) + 's'">
+        <div
+          class="pokemon-header"
+          [style.background-color]="getColor(p.types[0]?.type?.name)"
+        >
+          <div class="pokemon-number">#{{ p.id }}</div>
+          <div class="pokemon-type">{{ p.types[0]?.type?.name | uppercase }}</div>
+        </div>
+
+        <div class="pokemon-image">
+          <img
+            [src]="p.sprites.other['official-artwork'].front_default || p.sprites.front_default"
+            alt="{{ p.name }}"
+            class="pokemon-portrait"
+          />
+        </div>
+
+        <div class="pokemon-info">
+          <h2>{{ p.name | titlecase }}</h2>
+          <p class="pokemon-types">
+            Tipos:
+            <span *ngFor="let t of p.types; let ti = index">
+              {{ t.type.name }}<span *ngIf="ti < p.types.length - 1">, </span>
+            </span>
+          </p>
+
+          <div class="pokemon-stats">
+            <div *ngFor="let s of p.stats" class="pokemon-stat">
+              <strong class="stat-label">{{ s.stat.name }}</strong>
+              <span>{{ s.base_stat }}</span>
+            </div>
+          </div>
+
+          <div class="pokemon-actions">
+            <button 
+              (click)="verSpecies(p)" 
+              class="pixel-btn pixel-btn-blue"
+              title="Ver información del Pokédex"
+            >
+              Pokédex
+            </button>
+            <button 
+              (click)="verEvolucion(p)" 
+              class="pixel-btn pixel-btn-purple"
+              title="Ver cadena de evolución"
+            >
+              Evolución
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state si no hay pokémon (opcional, ya que siempre hay seed) -->
+    <div class="empty-library" *ngIf="pokemonList.length === 0">
+      <div class="empty-pokeball"></div>
+      <h3>¡Tu biblioteca está vacía!</h3>
+      <p>Agrega tus Pokémon favoritos desde la sección Pokemon API</p>
+    </div>
+  </div>
+</div>

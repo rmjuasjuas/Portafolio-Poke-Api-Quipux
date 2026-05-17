@@ -1,0 +1,30 @@
+{
+  "compileOnSave": false, // No recompila automáticamente al guardar
+  "compilerOptions": {
+    "rootDir": "./src", // "oye, todos mis archivos .ts están dentro de src, búscalos ahí"
+    "outDir": "./dist/out-tsc", // El código compilado va a parar aquí
+    "strict": true, // Modo estricto: TypeScript te regaña si haces algo raro
+    "noImplicitOverride": true, // Si sobreescribes un método, tienes que poner 'override' explícitamente
+    "noPropertyAccessFromIndexSignature": true, // Obliga a usar ['propiedad'] en vez de .propiedad si no está definida
+    "noImplicitReturns": true, // Toda función debe retornar algo, no puedes dejarlo a medias
+    "noFallthroughCasesInSwitch": true, // En un switch, cada case debe tener su break o return
+    "skipLibCheck": true, // Se salta la revisión de tipos en librerías externas (más rápido)
+    "esModuleInterop": true, // Permite importar librerías CommonJS como si fueran ES Modules
+    "sourceMap": true, // Genera mapas para que puedas debuggear el código original en el navegador
+    "declaration": false, // No genera archivos .d.ts (no necesario en apps, solo en librerías)
+    "experimentalDecorators": true, // Habilita los decoradores como @Component, @Injectable, etc.
+    "moduleResolution": "bundler", // Le dice cómo resolver imports (modo moderno para bundlers como Vite/esbuild)
+    "importHelpers": true, // Reutiliza funciones de ayuda de tslib en vez de repetirlas en cada archivo
+    "target": "ES2022", // El código se compila para navegadores que entienden ES2022
+    "module": "ES2022", // Usa el sistema de módulos ES2022 (import/export modernos)
+    "useDefineForClassFields": false, // Compatibilidad con decoradores de Angular al definir propiedades
+    "lib": ["ES2022", "dom"], // Librerías disponibles: funciones modernas de JS + APIs del navegador
+    "forceConsistentCasingInFileNames": true // El nombre del archivo debe coincidir exactamente (evita bugs en Linux)
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false, // Desactiva formato viejo de IDs para traducciones
+    "strictInjectionParameters": true, // Verifica que los parámetros del constructor estén bien inyectados
+    "strictInputAccessModifiers": true, // Los @Input() deben respetar sus modificadores de acceso
+    "strictTemplates": true // El HTML de los componentes también se revisa con TypeScript estricto
+  }
+}
