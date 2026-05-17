@@ -1,0 +1,96 @@
+<div class="pokemon-table-page">
+  <div class="pixel-container">
+    <h1 class="section-title animate-fade-in">| POKEMON API |</h1>
+
+    <div class="search-section animate-fade-in">
+      <div class="search-box">
+        <h2>BUSCAR POKÉMON</h2>
+        <p class="search-description">
+          Consulta información de Pokémon usando la PokéAPI oficial
+        </p>
+
+        <div class="form-group">
+          <label for="limit">Límite de resultados:</label>
+          <input
+            id="limit"
+            [(ngModel)]="limit"
+            name="limit"
+            type="number"
+            class="pixel-input"
+            placeholder="Ej: 10"
+            min="1"
+            max="50"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="offset">Item inicial (offset):</label>
+          <input
+            id="offset"
+            [(ngModel)]="offset"
+            name="offset"
+            type="number"
+            class="pixel-input"
+            placeholder="Ej: 0"
+            min="0"
+          />
+        </div>
+
+        <button (click)="buscarPokemons()" class="pixel-btn pixel-btn-yellow">
+          CONSULTAR INFORMACIÓN
+        </button>
+      </div>
+    </div>
+
+    <div class="loading-section" *ngIf="loading">
+      <div class="pokeball-loader"></div>
+      <p>Cargando Pokémon...</p>
+    </div>
+
+    <div class="results-section" *ngIf="pokemons !== null && !loading">
+      <div class="results-header">
+        <h2>RESULTADOS</h2>
+        <span class="result-count">{{ pokemons.length }} Pokémon encontrados</span>
+      </div>
+
+      <div class="pokemon-grid">
+        <div class="pokemon-item animate-fade-in" *ngFor="let p of pokemons; let i = index">
+          <div class="pokemon-number">#{{ p.id }}</div>
+
+          <div class="pokemon-header-row">
+            <img
+              [src]="p.sprites.other['official-artwork'].front_default || p.sprites.front_default"
+              alt="{{p.name}}"
+              class="pokemon-image"
+            />
+            <div>
+              <div class="pokemon-name">{{ p.name }}</div>
+              <div class="pokemon-types">
+                <span *ngFor="let t of p.types; let ti = index">
+                  {{ t.type.name }}<span *ngIf="ti < p.types.length - 1">, </span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pokemon-xp">Base XP: {{ p.base_experience }}</div>
+
+          <div class="pokemon-url">
+            <a [href]="p.species?.url || '#'" target="_blank" class="url-link">
+              Ver species (Pokédex)
+            </a>
+            <button (click)="addToLibrary(p.name)" class="pixel-btn">Añadir a Library</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="(pokemons === null || pokemons.length === 0) && !loading">
+      <div class="empty-pokeball"></div>
+      <h3>¡No hay resultados aún!</h3>
+      <p>
+        Ingresa los parámetros y presiona "Consultar información" para ver los Pokémon
+      </p>
+    </div>
+  </div>
+</div>

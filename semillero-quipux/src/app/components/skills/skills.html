@@ -1,0 +1,59 @@
+<div class="skills-page">
+  <div class="pixel-container">
+    <h1 class="section-title animate-fade-in">| Habilidades |</h1>
+    
+    <div class="skills-wrapper">
+      <!-- Lenguajes de Programación -->
+      <div class="skills-section animate-fade-in">
+        <h2>Lenguajes de Programación</h2>
+        <p class="level-text">Nivel actual: Junior</p>
+        
+        <div class="skills-list">
+          <div *ngFor="let skill of programmingSkills" class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">{{ skill.name }}</span>
+              <span class="skill-level">{{ skill.levelText }}</span>
+            </div>
+            <div class="skill-bar">
+              <div 
+                class="skill-progress" 
+                [style.width]="getSkillBarWidth(skill.level)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logros y Certificados -->
+      <div class="certificates-section animate-fade-in">
+        <h2>Logros y Certificados</h2>
+        
+        <div class="certificates-list">
+          <div class="certificate-item">
+            <h3>Manejo de Inteligencia Artificial</h3>
+            <p class="cert-org">Netzun - Universidad San Ignacio de Miami</p>
+            <p class="cert-desc">Certificación en aplicaciones prácticas de IA, incluyendo machine learning y automatización de procesos.</p>
+          </div>
+
+          <div class="certificate-item">
+            <h3>Microsoft Excel Avanzado</h3>
+            <p class="cert-org">Netzun - Universidad San Ignacio de Miami</p>
+            <p class="cert-desc">Dominio de funciones avanzadas, macros, análisis de datos y visualización en Excel.</p>
+          </div>
+
+          <div class="certificate-item">
+            <h3>Diseño y Desarrollo de Sistemas</h3>
+            <p class="cert-org">SENA</p>
+            <p class="cert-desc">Formación integral en el análisis, diseño y desarrollo de sistemas de información empresariales.</p>
+          </div>
+
+          <div class="certificate-item">
+            <h3>Inglés B1</h3>
+            <p class="cert-org">Comfenalco</p>
+            <p class="cert-desc">Certificación de nivel intermedio-alto en inglés, con habilidades avanzadas de comunicación oral y escrita.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
